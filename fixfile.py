@@ -1,6 +1,6 @@
 import string
 
-maxlinesread = 300
+maxlinesread = 200
 theOrderOfStuff = [
     ["loan_amnt", "funded_amnt", "funded_amnt_inv", "term", "int_rate", "installment", "grade",
      "emp_length", "home_ownership", "annual_inc", "loan_status", "delinq_2yrs",
@@ -97,10 +97,11 @@ def checkIfLegit():
                     print '!!!!!!!cant convert to float: {0} title: {1} index: {2}'.format(
                         data.data[a].datavector[listOfIndexes[0][column]], data.titles[listOfIndexes[0][column]],
                         listOfIndexes[0][column])
+                    print "this happened at line :", a
                     exit()
 
 
-def findOutWhatToRead():
+def findoutwhattoread():
     count = 0
     for columnIndex in xrange(len(data.titles)):
         if data.titles[columnIndex] in theOrderOfStuff[0]:
@@ -130,6 +131,17 @@ def printForProgrammer():
         for jj in xrange(0, 8):
             print ' {0:8}'.format(data.data[jj].datavector[listOfIndexes[0][ii]]),
         print ""
+
+
+def writetofile(fileName):
+    file  = open(fileName,"w")
+    for i in xrange(len(listOfIndexes[0])):
+        file.write ('{0},'.format(data.titles[listOfIndexes[0][i]]))
+    file.write("\n")
+    for i in xrange(len(data.data)):
+        for j in xrange(len(listOfIndexes[0])):
+            file.write('{0},'.format(data.data[i].datavector[listOfIndexes[0][j]]))
+        file.write("\n")
 
 
 def formatData():
@@ -255,7 +267,7 @@ for i in xrange(len(data.data)):
 for i in xrange(len(data.titles)):
     data.titles[i] = data.titles[i].replace("\"", "")
 
-findOutWhatToRead()
+findoutwhattoread()
 
 formatData()
 
@@ -263,3 +275,5 @@ print "=========================================================================
 printForProgrammer()
 print "======================================================================================="
 checkIfLegit()
+
+writetofile("fake.csv")
